@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Header, List, Map, PlaceDetails } from "./components";
 import { CssBaseline, Grid } from "@material-ui/core";
+import { getPlacesData } from "./utils/api/fetchData";
 
 const App = () => {
+  const [placesData, setPlacesData] = useState([]);
+  const [coordinates, setCoordinates] = useState({});
+  const [mapBounds, setMapBounds] = useState(null);
+
+  //* get users location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoordinates({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getPlacesData();
+      setPlacesData(data);
+    })();
+  }, [coordinates, mapBounds]);
+
   return (
     <>
       <CssBaseline />
@@ -12,7 +33,11 @@ const App = () => {
           <List />
         </Grid>
         <Grid item xs={12} md={8}>
-          <Map />
+          <Map
+            setCoordinates={setCoordinates}
+            setMapBounds={setMapBounds}
+            coordinates={coordinates}
+          />
         </Grid>
       </Grid>
     </>

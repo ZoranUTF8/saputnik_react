@@ -5,10 +5,9 @@ import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab";
 import useStyles from "./styles";
 
-const Map = () => {
+const Map = ({ setCoordinates, setMapBounds, coordinates }) => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(min-width:600px)");
-  const coordinates = { lat: 0, lng: 0 };
 
   return (
     <>
@@ -20,7 +19,13 @@ const Map = () => {
           defaultZoom={14}
           margin={[50, 50, 50, 50]}
           options={""}
-          onChange={""}
+          onChange={(evt) => {
+            setCoordinates({ lat: evt.center.lat, lng: evt.center.lng });
+            setMapBounds({
+              ne: evt.marginBounds.ne,
+              sw: evt.marginBounds.sw,
+            });
+          }}
           onChildClick={""}
         ></GoogleMapReact>
       </div>
