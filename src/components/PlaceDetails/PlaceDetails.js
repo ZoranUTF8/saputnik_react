@@ -34,6 +34,12 @@ const PlaceDetails = ({ place }) => {
             {place.name}
           </Typography>
           <Box display="flex" justifyContent="space-between">
+            <Rating value={Number(place.rating)} readOnly />
+            <Typography gutterBottom variant="subtitle1">
+              od {place.num_reviews} recenzija
+            </Typography>
+          </Box>
+          <Box display="flex" justifyContent="space-between">
             <Typography variant="subtitle1">Cijena</Typography>
             <Typography gutterBottom variant="subtitle1">
               {place.price_level}
